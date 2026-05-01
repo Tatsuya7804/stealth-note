@@ -4,22 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>View Page</title>
-   <style>
+    <style>
         body { 
+            background-color: #1e1e1e; /* 落ち着いたダークグレー */
+            color: #d4d4d4; 
             font-family: sans-serif; 
+            margin: 0; 
             padding: 20px; 
-            /* 真っ黒すぎないチャコールグレー */
-            background: #1a1a1a; 
-            /* 文字色は少し落とした白（目に優しい） */
-            color: #e0e0e0; 
-            line-height: 1.8; 
-            margin: 0;
+            line-height: 1.6;
+            word-wrap: break-word;
         }
-        #display { 
-            white-space: pre-wrap; 
-            word-wrap: break-word; 
-            font-size: 16px; 
-        }
+        #display { white-space: pre-wrap; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -30,8 +25,7 @@
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // ★自分のConfigに書き換えてください
-       const firebaseConfig = {
+         const firebaseConfig = {
   apiKey: "AIzaSyAHN2SoKuuuAwh3MAiTiA6LkNbL4qPMZ0o",
   authDomain: "stealth-note-93deb.firebaseapp.com",
   databaseURL: "https://stealth-note-93deb-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -40,13 +34,20 @@
   messagingSenderId: "1025590345387",
   appId: "1:1025590345387:web:10e5bfc3a97f14e79301ee"
 };
+
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth();
 
         signInAnonymously(auth).then(() => {
             onValue(ref(db, 'shared_note/text'), (snapshot) => {
-                document.getElementById('display').innerText = snapshot.val() || "";
+                const data = snapshot.val();
+                document.getElementById('display').innerText = data || "まだ入力がありません";
                 window.scrollTo(0, document.body.scrollHeight);
             });
-        }).catch((error) => console.error("ログイン失敗", error));
+        }).catch((error) => {
+            document.getElementById('display').innerText = "接続エラー: " + error.message;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Input Page</title>
+    <style>
+        body { background: #000; margin: 0; }
+        /* 文字も背景も黒にして見えなくする */
+        textarea {
+            width: 100vw; height: 100vh;
+            background: #000; color: #000; 
+            border: none; outline: none; font-size: 18px;
+            padding: 20px; box-sizing: border-box;
+            caret-color: #333; /* カーソルだけうっすら見える程度に */
+        }
+    </style>
+</head>
+<body>
+    <textarea id="editor" autofocus></textarea>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // ★ここにステップ1でメモした内容を貼り付ける
+        const firebaseConfig = {
+  apiKey: "AIzaSyAHN2SoKuuuAwh3MAiTiA6LkNbL4qPMZ0o",
+  authDomain: "stealth-note-93deb.firebaseapp.com",
+  databaseURL: "https://stealth-note-93deb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "stealth-note-93deb",
+  storageBucket: "stealth-note-93deb.firebasestorage.app",
+  messagingSenderId: "1025590345387",
+  appId: "1:1025590345387:web:10e5bfc3a97f14e79301ee"
+};
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        document.getElementById('editor').addEventListener('input', (e) => {
+            set(ref(db, 'shared_note/'), {
+                text: e.target.value
+            });
+        });
+    </script>
+</body>
+</html>

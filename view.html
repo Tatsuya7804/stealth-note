@@ -31,15 +31,15 @@
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // ★自分のConfigに書き換えてください
-        const firebaseConfig = {
-            apiKey: "...",
-            authDomain: "...",
-            databaseURL: "...",
-            projectId: "...",
-            storageBucket: "...",
-            messagingSenderId: "...",
-            appId: "..."
-        };
+       const firebaseConfig = {
+  apiKey: "AIzaSyAHN2SoKuuuAwh3MAiTiA6LkNbL4qPMZ0o",
+  authDomain: "stealth-note-93deb.firebaseapp.com",
+  databaseURL: "https://stealth-note-93deb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "stealth-note-93deb",
+  storageBucket: "stealth-note-93deb.firebasestorage.app",
+  messagingSenderId: "1025590345387",
+  appId: "1:1025590345387:web:10e5bfc3a97f14e79301ee"
+};
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth();

@@ -4,82 +4,55 @@
     <meta charset="utf-8">
     <title>Input Page</title>
     <style>
-        body { background: #000; margin: 0; }
+        /* 隣の人からは真っ暗な画面に見える設定 */
+        body { background: #000; margin: 0; overflow: hidden; }
         textarea {
             width: 100vw; height: 100vh;
-            background: #000; color: #000; 
+            background: #000; color: #000; /* 文字も黒にして究極のステルスに */
             border: none; outline: none; font-size: 18px;
             padding: 20px; box-sizing: border-box;
-            caret-color: #333;
+            caret-color: #333; /* カーソルだけ薄く見えるようにして場所を把握 */
+            resize: none;
         }
     </style>
 </head>
 <body>
-    <textarea id="editor" autofocus></textarea>
+    <textarea id="editor" autofocus placeholder="ここに打ち込むとスマホに流れます..."></textarea>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // ★自分のConfigに書き換えてください
-        <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="utf-8">
-    <title>Input Page</title>
-    <style>
-        body { background: #000; margin: 0; }
-        textarea {
-            width: 100vw; height: 100vh;
-            background: #000; color: #000; 
-            border: none; outline: none; font-size: 18px;
-            padding: 20px; box-sizing: border-box;
-            caret-color: #333;
-        }
-    </style>
-</head>
-<body>
-    <textarea id="editor" autofocus></textarea>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        // ★自分のConfigに書き換えてください
+        // ★★★ ここを Firebase でコピーした自分の内容に書き換えてください ★★★
         const firebaseConfig = {
-            apiKey: "...",
-            authDomain: "...",
-            databaseURL: "...",
-            projectId: "...",
-            storageBucket: "...",
-            messagingSenderId: "...",
-            appId: "..."
+            apiKey: "あなたのAPIキー",
+            authDomain: "あなたのプロジェクトID.firebaseapp.com",
+            databaseURL: "https://あなたのプロジェクトID-default-rtdb.firebaseio.com",
+            projectId: "あなたのプロジェクトID",
+            storageBucket: "あなたのプロジェクトID.appspot.com",
+            messagingSenderId: "あなたの番号",
+            appId: "あなたのアプリID"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const auth = getAuth();
 
-        // ページを開いた瞬間に匿名ログインを実行
+        // 匿名ログインを実行（セキュリティルール auth != null を突破するために必要）
         signInAnonymously(auth).then(() => {
-            console.log("ログイン成功");
-            document.getElementById('editor').addEventListener('input', (e) => {
-                set(ref(db, 'shared_note/'), { text: e.target.value });
+            console.log("ログイン成功！書き込み準備完了");
+            const editor = document.getElementById('editor');
+            
+            editor.addEventListener('input', (e) => {
+                // データベースの 'shared_note/text' に文字を送る
+                set(ref(db, 'shared_note/'), {
+                    text: e.target.value
+                });
             });
-        }).catch((error) => console.error("ログイン失敗", error));
+        }).catch((error) => {
+            console.error("ログインに失敗しました。Firebaseの設定を確認してください:", error);
+        });
     </script>
 </body>
 </html>
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-        const auth = getAuth();
-
-        // ページを開いた瞬間に匿名ログインを実行
-        signInAnonymously(auth).then(() => {
-            console.log("ログイン成功");
-            document.getElementById('editor').addEventListener('input', (e) => {
-                set(ref(db, 'shared_note/'), { text: e.target.value });
-            });
-        }).catch((error) => console.error("ログイン失敗", error));

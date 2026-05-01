@@ -4,28 +4,26 @@
     <meta charset="utf-8">
     <title>Input Page</title>
     <style>
-        /* 隣の人からは真っ暗な画面に見える設定 */
         body { background: #000; margin: 0; overflow: hidden; }
         textarea {
             width: 100vw; height: 100vh;
-            background: #000; color: #000; /* 文字も黒にして究極のステルスに */
+            background: #000; color: #000;
             border: none; outline: none; font-size: 18px;
             padding: 20px; box-sizing: border-box;
-            caret-color: #333; /* カーソルだけ薄く見えるようにして場所を把握 */
+            caret-color: #333;
             resize: none;
         }
     </style>
 </head>
 <body>
-    <textarea id="editor" autofocus placeholder="ここに打ち込むとスマホに流れます..."></textarea>
+    <textarea id="editor" autofocus placeholder="..."></textarea>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // ★★★ ここを Firebase でコピーした自分の内容に書き換えてください ★★★
-       const firebaseConfig = {
+        const firebaseConfig = {
   apiKey: "AIzaSyAHN2SoKuuuAwh3MAiTiA6LkNbL4qPMZ0o",
   authDomain: "stealth-note-93deb.firebaseapp.com",
   databaseURL: "https://stealth-note-93deb-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -39,20 +37,14 @@
         const db = getDatabase(app);
         const auth = getAuth();
 
-        // 匿名ログインを実行（セキュリティルール auth != null を突破するために必要）
         signInAnonymously(auth).then(() => {
-            console.log("ログイン成功！書き込み準備完了");
             const editor = document.getElementById('editor');
-            
             editor.addEventListener('input', (e) => {
-                // データベースの 'shared_note/text' に文字を送る
                 set(ref(db, 'shared_note/'), {
                     text: e.target.value
                 });
             });
-        }).catch((error) => {
-            console.error("ログインに失敗しました。Firebaseの設定を確認してください:", error);
-        });
+        }).catch((error) => console.error("ログイン失敗", error));
     </script>
 </body>
 </html>
